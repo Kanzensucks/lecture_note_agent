@@ -1,0 +1,116 @@
+Harvard CS121 - Introduction to Theoretical Computer ScienceMock Lecture Transcript (3000 words)Topic: Uncomputability and the Halting ProblemInstructor: Prof. Barak (fictionalized composite)
+
+[00:00] Good morning, everyone. Let’s get started. Today, we're diving into one of the most profound results in computer science: Uncomputability. More specifically, we’re going to explore the Halting Problem and the broader implications it has for what computers can and cannot do. This lecture might come up on the midterm and final, so do pay attention to the structure of the proofs and the intuition behind them.
+
+[00:50] Let me start with a thought experiment. Imagine a program—call it "PerfectPredictor". This program can take in any other program and any input, and tell us with perfect accuracy whether the program halts or runs forever. Seems innocent enough, right? We often assume we can reason about what our code does. But what if I told you that such a predictor cannot exist? That there is no general algorithm to solve this problem? That's where we're heading today.
+
+[02:15] Let's take a step back. Computability theory was pioneered by Alan Turing in the 1930s. He formalized the notion of an algorithm via what we now call a Turing machine. If you haven’t reviewed that model lately, now would be a good time. It forms the bedrock of everything we do in this class.
+
+[03:30] Here’s the core idea. Some problems are just... fundamentally unsolvable. Not because we lack computing power, or time, or memory, but because they are inherently undecidable. You could be running the world’s fastest supercomputer for a trillion years, and it would still get stuck on these problems.
+
+[04:45] The Halting Problem is the canonical example. Let's define it formally. Given a program P and an input x, determine whether P(x) halts.
+
+[05:30] Seems simple, right? We do this kind of reasoning when we debug code. But let’s try to construct such a decider formally, and see where it takes us.
+
+[06:10] Suppose we have a function HALT(P, x) that returns true if P(x) halts, and false otherwise. Now let’s play a little trick. Define a new function:
+
+function CONTRADICTION(P):
+    if HALT(P, P):
+        loop forever
+    else:
+        return "halts"
+
+[07:30] This function is weird. It takes a program as input and runs it on itself. If P(P) halts, then we loop forever. If it doesn’t halt, we return. This is exactly the opposite of what P(P) does.
+
+[08:10] Now here’s the kicker. What happens if we run CONTRADICTION(CONTRADICTION)? Pause and think about it.
+
+[08:50] If CONTRADICTION halts when run on itself, then HALT must have said it halts, which means it loops forever. But if it loops forever, then HALT must have said it doesn't halt, so it returns. That’s a contradiction. Hence, HALT cannot exist.
+
+[09:40] This is called a proof by contradiction, and it’s one of the most elegant and powerful tools in our mathematical toolbox. In this case, it's used to show that the Halting Problem is undecidable.
+
+[10:30] Now, I want you to notice something. We didn't say that some programs are hard to predict. We're saying that there is no universal program that can predict halting behavior for all other programs. That’s a huge difference. This is an impossibility result.
+
+[11:30] Side note—you might see this idea show up on a problem asking you to prove something is undecidable by reduction. We reduce from the Halting Problem. So make sure you can reconstruct this argument. Especially the diagonalization step, where we feed the program to itself. That’s where the magic happens.
+
+[12:45] Okay, let me pause here. Any questions?
+
+[13:10] Great. Let’s move on to the broader implications. If the Halting Problem is undecidable, then so are many other problems. For example:
+
+Can we tell if a program will ever output a specific value?
+
+Can we tell if two programs compute the same function?
+
+Can we determine if a loop will terminate for all inputs?
+
+[14:30] All of these can be reduced to the Halting Problem, meaning if we could solve them, we could solve the Halting Problem too. But we can’t. So they’re undecidable as well.
+
+[15:10] Now here’s where things get practical. You might be wondering: if the Halting Problem is unsolvable, why does your IDE give you compile-time warnings about unreachable code or infinite loops? Well, those are heuristics. They catch some obvious cases, but not all. No general checker can exist.
+
+[16:30] This matters in static analysis, compiler design, and program verification. Engineers building tools like TypeScript, Rust, or even GCC have to work within these theoretical limits. They can’t detect all bugs, only likely ones.
+
+[17:20] So let me say this clearly: undecidability is not just theory. It directly shapes the tools we use every day. And as future computer scientists, you must understand where the limits lie.
+
+[18:00] Let’s now talk about Rice's Theorem. If you haven’t seen this before, write it down:
+
+Any non-trivial semantic property of programs is undecidable.
+
+[18:45] That sounds intimidating, so let me break it down. A property is "semantic" if it relates to what the program computes rather than how it does it. And "non-trivial" means the property is true for some programs and false for others.
+
+[19:30] For example: "Does the program compute a constant function?" That’s non-trivial and semantic. So, by Rice’s Theorem, it's undecidable.
+
+[20:00] Again, proof is by reduction from the Halting Problem. So the general strategy: assume a decider exists, use it to build a decider for halting, then show contradiction. You’ll definitely get a Rice's Theorem application question on one of the problem sets.
+
+[21:10] We’ve now touched on three core ideas:
+
+Halting Problem is undecidable.
+
+Proof by contradiction using self-reference.
+
+Rice's Theorem generalizes the undecidability to semantic properties.
+
+[22:00] Let’s go deeper. There are hierarchies of undecidability. Some problems are worse than halting. For instance, the Halting Problem on All Inputs is even harder. It asks: does a program halt on every input? That’s Π₂⁰-complete, and beyond the simple Halting Problem which is Σ₁⁰-complete.
+
+[23:20] That notation comes from the arithmetical hierarchy. If you’re going to do grad work in logic or complexity, get comfortable with that. For now, just know that undecidable problems can be organized into levels of "hardness".
+
+[24:30] There’s also Gödel’s Incompleteness Theorems, which say that there are true mathematical statements that can never be proven within a formal system like arithmetic. Turing and Gödel were working on similar problems from different angles, and their results are deeply connected.
+
+[25:40] So in short, there are limits to:
+
+What we can compute (Turing)
+
+What we can prove (Gödel)
+
+[26:20] This might sound depressing. But it’s actually liberating. It tells us what not to waste time on. Instead of trying to solve unsolvable problems, we build approximations, heuristics, or settle for probabilistic answers.
+
+[27:00] Okay, now some practical advice. When you're doing a problem set question involving undecidability, remember to:
+
+Use reduction from a known undecidable problem.
+
+Focus on the structure of the contradiction.
+
+Carefully define your inputs and outputs.
+
+Be precise with your language: you’re doing mathematical logic, not hand-waving.
+
+[28:15] Before we wrap up, one more thing. There's a connection to diagonalization, the same technique used in Cantor's proof that the real numbers are uncountable. It shows up again and again in CS theory: in Turing's proof, in time hierarchy theorems, and in oracle machines. So if you grasp diagonalization well, you're ahead of the curve.
+
+[29:10] All right, that’s a lot to chew on. Let’s summarize.
+
+🔁 Recap:
+
+The Halting Problem is undecidable.
+
+No program can decide for all others whether they halt.
+
+Proof is via contradiction using self-reference.
+
+Rice’s Theorem generalizes this result.
+
+These limits impact programming languages, compilers, and verification tools.
+
+[30:00] Read Chapter 3 of the textbook before next week. Problem Set 3 will include at least one reduction proof and one Rice's Theorem application. And yes, these are fair game for the midterm.
+
+[30:20] Thanks for your focus today. See you next lecture when we explore the class P and begin our journey toward NP-completeness.
+
+End of Lecture
+

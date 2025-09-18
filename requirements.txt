@@ -1,0 +1,5 @@
+python-dotenv
+ollama
+python-docx
+whisper
+PyMuPDF
